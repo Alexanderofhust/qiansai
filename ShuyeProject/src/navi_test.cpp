@@ -1,5 +1,10 @@
 #include<opencv2/opencv.hpp>
 //#include <xfeatures2d.hpp>  //SURF特征点头文件
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/videoio.hpp>
+#include <opencv2/qrcode.hpp> // 需要OpenCV_contrib
+
 #include <iostream>
 #include<vector>
 #include "main.h"
@@ -25,22 +30,26 @@ int navi_cal(void)
 
 void mydetectQRcode1(void)
 {
-	Mat img = imread("D:\\openCV\\catoons\\qrcode3.png");
-	if (img.empty()) {
-		cout << "请确认图像文件名称是否正确" << endl;
-		//return -1; 
-	}
-	Mat gray, qrcode_bin;
-	cvtColor(img, gray, COLOR_BGR2GRAY);
+	//摄像头初始化在main里完成
+	// Mat img = imread("D:\\openCV\\catoons\\qrcode3.png");
+	// if (img.empty()) {
+	// 	cout << "请确认图像文件名称是否正确" << endl;
+	// 	//return -1; 
+	//}
+	//Mat gray, qrcode_bin;
+	//cvtColor(img, gray, COLOR_BGR2GRAY);
 	QRCodeDetector qrcodedetector;
+
+	Mat frame,qrcode_bin;
+    cap >> frame; // 获取一帧
 	
 	string information;
 	bool isQRcode;
-	isQRcode = qrcodedetector.detect(gray, points);  //识别二维码
+	isQRcode = qrcodedetector.detect(frame, points);  //识别二维码
 	if (isQRcode)
 	{
 		//解码二维码
-		information = qrcodedetector.decode(gray, points, qrcode_bin);
+		information = qrcodedetector.decode(frame, points, qrcode_bin);
 		cout << points << endl;  //输出二维码四个顶点的坐标
 	}
 	else
@@ -59,21 +68,21 @@ void mydetectQRcode1(void)
 		line(img, points[i], points[i + 1], Scalar(0, 0, 255), 2, 8);
 	}
 	//将解码内容输出到图片上
-	putText(img, information.c_str(), Point(20, 30), 0, 1.0, Scalar(0, 0, 255), 2, 8);
+	//putText(img, information.c_str(), Point(20, 30), 0, 1.0, Scalar(0, 0, 255), 2, 8);
 
 	//利用函数直接定位二维码并解码
 	string information2;
 	vector<Point> points2;
 	information2 = qrcodedetector.detectAndDecode(gray, points2);
 	cout << points2 << endl;
-	putText(img, information2.c_str(), Point(20, 55), 0, 1.0, Scalar(0, 0, 0), 2, 8);
+	//putText(img, information2.c_str(), Point(20, 55), 0, 1.0, Scalar(0, 0, 0), 2, 8);
 
 	//输出结果
-	imshow("result", img);
-	namedWindow("qrcode_bin", WINDOW_NORMAL);
-	imshow("qrcode_bin", qrcode_bin);
+	//imshow("result", img);
+	//namedWindow("qrcode_bin", WINDOW_NORMAL);
+	//imshow("qrcode_bin", qrcode_bin);
 	waitKey(1);
-	//进行一次自动退出，放到主while进行循环
+	//对等到1ms自动退出，放到主while进行循环
 }
 //传入的Point必须为4个点
 void move_cal(const vector<Point>& xpoints5)

@@ -19,4 +19,6 @@ int navi_cal(void);
 void shuye_config(void);
 int drop_detect(int argc, char **argv);
 void data_send(void);
+void mydetectQRcode1(void);
+void move_cal(const vector<Point>& xpoints5);
 #endif

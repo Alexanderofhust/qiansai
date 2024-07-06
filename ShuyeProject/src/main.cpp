@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include<opencv2/opencv.hpp>
 #include "main.h"
 
 
@@ -30,6 +31,13 @@ int main()
 void shuye_config(void)
 {
     *argc=[];
+    system("color F0");
+	 VideoCapture cap(1); // 摄像头索引通常是0或1，根据实际情况调整
+
+    if(!cap.isOpened()) {
+        cerr << "Error opening camera." << endl;
+        return -1;
+    }
 }
 
 void write_shuye_to_file(shuye_t s, const char* filename) {

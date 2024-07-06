@@ -35,7 +35,7 @@ void send_data_to_cloud(const std::string& node_id, const std::string& json_data
 
     if(curl) {
         // 设置URL
-        std::string url = "https://api.example.com/upload_node_data";
+        std::string url = "https://api.zhiyun360.com";
         
         // 设置POST数据
         std::string post_fields = "{\"node_id\":\"" + node_id + "\", \"data\":" + json_data + "}";
